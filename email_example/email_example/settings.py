@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -123,9 +124,18 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT =  587
-EMAIL_HOST_USER = 'hchoquehuancaz@unsa.edu.pe'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'hz@outlook.com.pe'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+# password
+password_file_path = os.path.join(BASE_DIR, 'password.txt')
+try:
+    with open(password_file_path, 'r') as file:
+        EMAIL_HOST_PASSWORD = file.read().strip()
+except FileNotFoundError:
+    EMAIL_HOST_PASSWORD = ''
+    print('No se encontró el archivo password.txt')
